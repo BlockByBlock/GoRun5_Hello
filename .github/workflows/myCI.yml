@@ -23,7 +23,21 @@ jobs:
     - name: Check Go Version
       run: go version
 
-    - name: Checkout repo
+    - name: Checkout remote private repo
+      uses: actions/checkout@v2.4.2
+      with:
+        repository: lowkh2/GoSchoolRemoteExample
+        token: ${{ secrets.GO_SECRET }}
+        path: remote
+    
+    - name: Check remote files
+      run: |
+        cd remote
+        ls
+        cat myText.txt
+        cd ..
+
+    - name: Checkout main repo
       uses: actions/checkout@v2.4.2
 
     - name: Check File System
@@ -31,5 +45,5 @@ jobs:
 
     - name: Install dependencies
       run: |
-        go get github.com/franela/goblin
+        go build
         go test -v
