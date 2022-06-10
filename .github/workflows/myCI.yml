@@ -24,7 +24,12 @@ jobs:
       run: go version
 
     - name: Checkout repo
-      run: actions/checkout@v2.4.2
+      uses: actions/checkout@v2.4.2
 
     - name: Check File System
       run: ls
+
+    - name: Install dependencies
+      run: |
+        go get github.com/franela/goblin
+        go test -v
