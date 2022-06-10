@@ -47,3 +47,20 @@ jobs:
       run: |
         go build
         go test -v
+        go test -v | go2xunit -output tests.xml
+
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: ${{ always() }}
+      with:
+        files: tests.xml
+    
+    - if: ${{ failure() }}
+      name: Create Issue Action
+      uses: nashmaniac/create-issue-action@v1.1
+      with:
+        title: Build Failed
+        token: ${{secrets.GITHUB_TOKEN}}
+        assignees: ${{github.actor}}
+        labels: worflow-failed
+        body: Workflow failed for commit ${{github.sha}}
